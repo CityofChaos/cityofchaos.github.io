@@ -17,17 +17,23 @@
         * { box-sizing: border-box; }
         body, html { margin: 0; padding: 0; width: 100%; height: 100%; background-color: #000; overflow: hidden; }
 
-        /* --- IMMERSIVE CHARACTER CAST BACKGROUND --- */
+        /* --- IMMERSIVE CHARACTER CAST BACKGROUND (OPTIMIZED) --- */
         .teaser-bg {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background: url('COC_CharsImg.jpg') center top no-repeat;
-            background-size: contain; z-index: 0;
+            position: fixed; 
+            /* Shrinks the artwork container slightly from the screen boundaries */
+            top: 5vh; left: 5vw; width: 90vw; height: 90vh;
+            background: url('COC_CharsImg.jpg') center center no-repeat;
+            background-size: contain; 
+            z-index: 0;
         }
 
-        /* Ambient dark vignette surrounding your artwork */
+        /* Heavy cinematic vignette layers to dissolve the borders into total darkness */
         .vignette {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            box-shadow: inset 0 0 100px rgba(0,0,0,0.8), inset 0 0 250px rgba(0,0,0,0.6);
+            /* Layer 1: Strong outer box shadow to bleed inner image edges to solid black */
+            box-shadow: inset 0 0 100px rgba(0,0,0,1), inset 0 0 200px rgba(0,0,0,1);
+            /* Layer 2: Soft radial gradient overlay to feather the center into the corners */
+            background: radial-gradient(circle, rgba(0,0,0,0) 40%, rgba(0,0,0,0.8) 75%, rgba(0,0,0,1) 100%);
             z-index: 1; pointer-events: none;
         }
 
@@ -38,10 +44,10 @@
             z-index: 10; padding: 20px;
         }
 
-        /* Text frame sitting horizontally over the lower-mid section */
+        /* Text frame shifted lower down to clear the faces */
         .status-box {
             text-align: center; max-width: 700px; width: 100%;
-            padding: 20px; margin-top: 120px; /* Aligns the text right across Damian's chest panel area */
+            padding: 20px; margin-top: 180px; 
         }
 
         /* Metallic title styling with deep blurple tracking pulse */
@@ -80,9 +86,11 @@
 </head>
 <body>
 
+    <!-- VISUAL ENVIRONMENT LAYER -->
     <div class="teaser-bg"></div>
     <div class="vignette"></div>
 
+    <!-- MAIN CORE CONSOLE -->
     <div class="overlay-container">
         <div class="status-box">
             <h1 class="main-title">Characters Coming Soon</h1>
