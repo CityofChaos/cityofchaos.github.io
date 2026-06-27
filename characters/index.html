@@ -1,1 +1,95 @@
-<h1>Characters Page Coming Soon</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>City of Chaos // Central Archive</title>
+    
+    <link rel="shortcut icon" type="image/jpg" href="https://64.media.tumblr.com/c74e30cd1bf1771144d86d0fdc80a97d/ad516a4dcf70de9b-ef/s2048x3072/ac3811a4f0fcd1345c517e53147b6eec4f2e3843.jpg">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+    
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <style>
+        /* --- RESET & BASIC UI --- */
+        * { box-sizing: border-box; }
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; background-color: #000; overflow: hidden; }
+
+        /* --- IMMERSIVE CHARACTER CAST BACKGROUND --- */
+        .teaser-bg {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: url('COC_CharsImg.jpg') center center no-repeat;
+            background-size: cover; z-index: 0;
+        }
+
+        /* Ambient dark vignette surrounding your artwork */
+        .vignette {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            box-shadow: inset 0 0 100px rgba(0,0,0,0.8), inset 0 0 250px rgba(0,0,0,0.6);
+            z-index: 1; pointer-events: none;
+        }
+
+        /* --- SCREEN INTERFACE WRAPPER --- */
+        .overlay-container {
+            position: relative; width: 100%; height: 100%;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            z-index: 10; padding: 20px;
+        }
+
+        /* Text frame sitting horizontally over the lower-mid section */
+        .status-box {
+            text-align: center; max-width: 700px; width: 100%;
+            padding: 20px; margin-top: 120px; /* Aligns the text right across Damian's chest panel area */
+        }
+
+        /* Metallic title styling with deep blurple tracking pulse */
+        .main-title {
+            font-family: 'Orbitron', sans-serif; font-size: 46px; font-weight: 900;
+            letter-spacing: 8px; margin: 0 0 10px 0; text-transform: uppercase;
+            background: linear-gradient(to bottom, #ffffff 0%, #a0a0a0 45%, #222222 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.9)) drop-shadow(0 0 15px rgba(120, 0, 255, 0.5));
+            animation: blurple-pulse 4s infinite ease-in-out;
+        }
+
+        @keyframes blurple-pulse {
+            0%, 100% { filter: drop-shadow(0 4px 8px rgba(0,0,0,0.9)) drop-shadow(0 0 12px rgba(120, 0, 255, 0.4)); }
+            50% { filter: drop-shadow(0 4px 8px rgba(0,0,0,0.9)) drop-shadow(0 0 30px rgba(150, 0, 255, 0.8)); }
+        }
+
+        .status-box p {
+            font-family: 'Rajdhani', sans-serif; font-size: 16px; color: #eee;
+            font-weight: 700; letter-spacing: 3px; text-transform: uppercase;
+            margin: 0 0 30px 0; text-shadow: 0 2px 8px rgba(0,0,0,0.9);
+        }
+
+        /* UI Terminal Button */
+        .back-btn {
+            display: inline-block; font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 700;
+            color: #ff0044; text-decoration: none; text-transform: uppercase;
+            letter-spacing: 2px; border: 1px solid #ff0044; padding: 8px 24px;
+            transition: 0.3s ease-in-out; background: rgba(0,0,0,0.7);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        }
+        .back-btn:hover {
+            color: #000; background: #ff0044; box-shadow: 0 0 20px #ff0044;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="teaser-bg"></div>
+    <div class="vignette"></div>
+
+    <div class="overlay-container">
+        <div class="status-box">
+            <h1 class="main-title">Characters Coming Soon</h1>
+            <p>// Decryption in progress. Terminal offline.</p>
+            <a href="/" class="back-btn">[ RETURN TO MAIN INTERFACE ]</a>
+        </div>
+    </div>
+
+</body>
+</html>
