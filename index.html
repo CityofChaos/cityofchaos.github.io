@@ -41,7 +41,7 @@
             transition: filter 3s cubic-bezier(0.1, 0.8, 0.25, 1);
         }
 
-        /* VIOLENT VIDEO SHATTER ANIMATION (The heavy horizontal slices) */
+        /* VIOLENT VIDEO SHATTER ANIMATION */
         .video-shatter {
             animation: video-tear 0.15s infinite;
         }
@@ -188,9 +188,9 @@
         <button id="init-btn">[ Connect to Feed ]</button>
     </div>
 
-    <!-- FORCE VIDEO CACHE CLEAR -->
+    <!-- CLEAN MP4 PATH WITHOUT QUERY STRING -->
     <video loop muted playsinline id="bg-video" class="feed-offline">
-        <source src="Asset-Site-Storage/COC_Glitch_Loop720P.mp4?v=2.0" type="video/mp4">
+        <source src="Asset-Site-Storage/COC_Glitch_Loop720P.mp4" type="video/mp4">
     </video>
     <div class="vignette"></div>
 
@@ -228,7 +228,6 @@
         <source src="https://www.dropbox.com/scl/fi/m7oenzptff1d0kllabr4e/COC_Sections_Playlist.mp3?rlkey=1zo6qeoxqt39yvpcm8nbs68wf&st=j6n18xdk&raw=1" type="audio/mpeg">
     </audio>
 
-    <!-- FORCE SFX CACHE CLEAR -->
     <audio id="glitch-sfx">
         <source src="Asset-Site-Storage/Minor GlitchSFX.mp3?v=2.0" type="audio/mpeg">
     </audio>
