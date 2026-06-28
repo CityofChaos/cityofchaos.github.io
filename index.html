@@ -13,10 +13,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
     <style>
-        /* --- CORE CUSTOM FONT LOADER --- */
+        /* --- CORE CUSTOM FONT LOADER (LINKED TO A-S-S) --- */
         @font-face {
             font-family: 'Erosion';
-            src: url('Examples of erosion.otf') format('opentype'); 
+            src: url('Asset-Site-Storage/Examples of erosion.otf') format('opentype'); 
             font-weight: normal;
             font-style: normal;
         }
@@ -32,30 +32,27 @@
             transform: scale(1);
         }
         
-        /* Initial offline state: cold, still, and dark */
         .feed-offline {
             filter: grayscale(100%) contrast(1.1) blur(8px) brightness(0.5);
         }
         
-        /* The 3-second recovery phase applied dynamically via JS */
         .feed-recovering {
             filter: grayscale(0%) contrast(1) blur(0px) brightness(1);
             transition: filter 3s cubic-bezier(0.1, 0.8, 0.25, 1);
         }
 
-        /* VIOLENT VIDEO SHATTER ANIMATION (Uses the video's actual color layers) */
         .video-shatter {
             animation: video-tear 0.15s infinite;
         }
 
         @keyframes video-tear {
             0% { transform: skew(0deg) scale(1.05); filter: contrast(3) saturate(3) hue-rotate(0deg); clip-path: inset(0 0 0 0); }
-            15% { transform: translate(-25px, 8px) skewX(-10deg); clip-path: inset(15% 0 60% 0); } /* Heavy upper horizontal slice */
-            30% { transform: translate(30px, -5px) scaleY(1.1); filter: hue-rotate(90deg) brightness(1.8) saturate(4); clip-path: inset(45% 0 20% 0); } /* Center slice */
-            45% { transform: translate(-15px, -10px); filter: invert(0.2) contrast(4); clip-path: inset(70% 0 10% 0); } /* Low block slice */
-            60% { transform: skewX(15deg) scaleX(1.1); filter: hue-rotate(180deg) saturate(5); clip-path: inset(5% 0 80% 0); } /* Top sliver slice */
+            15% { transform: translate(-25px, 8px) skewX(-10deg); clip-path: inset(15% 0 60% 0); }
+            30% { transform: translate(30px, -5px) scaleY(1.1); filter: hue-rotate(90deg) brightness(1.8) saturate(4); clip-path: inset(45% 0 20% 0); }
+            45% { transform: translate(-15px, -10px); filter: invert(0.2) contrast(4); clip-path: inset(70% 0 10% 0); }
+            60% { transform: skewX(15deg) scaleX(1.1); filter: hue-rotate(180deg) saturate(5); clip-path: inset(5% 0 80% 0); }
             75% { transform: translate(20px, 12px); clip-path: inset(35% 0 40% 0); }
-            90% { transform: skew(-5deg) translate(-10px, -2px); filter: brightness(2.5) contrast(2); clip-path: inset(82% 0 5% 0); } /* Intense bottom block */
+            90% { transform: skew(-5deg) translate(-10px, -2px); filter: brightness(2.5) contrast(2); clip-path: inset(82% 0 5% 0); }
             100% { transform: skew(0deg) scale(1.05); filter: contrast(3) saturate(3) hue-rotate(360deg); clip-path: inset(0 0 0 0); }
         }
         
@@ -71,7 +68,7 @@
             background: transparent; z-index: 9998;
             pointer-events: none; display: none;
             opacity: 1;
-            transition: opacity 0.6s ease; /* Smooth fizzle out at the end */
+            transition: opacity 0.6s ease;
         }
         
         #glitch-overlay.glitching {
@@ -191,7 +188,7 @@
     </div>
 
     <video loop muted playsinline id="bg-video" class="feed-offline">
-        <source src="COC_Glitch_Loop720P.mp4" type="video/mp4">
+        <source src="Asset-Site-Storage/COC_Glitch_Loop720P.mp4" type="video/mp4">
     </video>
     <div class="vignette"></div>
 
@@ -230,7 +227,7 @@
     </audio>
 
     <audio id="glitch-sfx">
-        <source src="Minor GlitchSFX.mp3" type="audio/mpeg">
+        <source src="Asset-Site-Storage/Minor GlitchSFX.mp3" type="audio/mpeg">
     </audio>
 
     <script>
@@ -247,33 +244,27 @@
             const glitch = document.getElementById('glitch-overlay');
             const boot = document.getElementById('boot-screen');
             
-            // 1. Instantly shred the actual video data layer using the custom animation
             video.classList.remove('feed-offline');
             video.classList.add('video-shatter');
             video.play();
             
-            // 2. Overlay the CRT scanline grid on top
             glitch.style.opacity = '1';
             glitch.classList.add('glitching');
             
-            // 3. Audio engine engagement
             sfx.volume = 0.4;
             sfx.play().catch(err => console.log("SFX tracking block handled:", err));
             
             music.volume = 0.7;
             music.play().catch(err => console.log("Music tracking block handled:", err));
             
-            // 4. Smoothly fade the overlay button screen away immediately over 3s
             boot.style.opacity = '0';
 
-            // 5. Fizzle stage: At 2.4 seconds, kill the harsh video tearing and initiate color stabilization
             setTimeout(() => {
                 video.classList.remove('video-shatter');
                 video.classList.add('feed-recovering');
-                glitch.style.opacity = '0'; // Dissolves the phosphor mask overlay
+                glitch.style.opacity = '0';
             }, 2400); 
 
-            // 6. Hard clean terminal termination exactly at the 3-second mark
             setTimeout(() => {
                 glitch.classList.remove('glitching');
                 boot.style.display = 'none';
