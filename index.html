@@ -21,12 +21,34 @@
         #bg-video {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             object-fit: cover; z-index: 0; pointer-events: none;
+            transform: scale(1);
         }
         
-        /* Smoothly crossfades back to full color and crisp focus over 3s */
+        /* Initial offline state: cold, still, and dark */
         .feed-offline {
             filter: grayscale(100%) contrast(1.1) blur(8px) brightness(0.5);
+        }
+        
+        /* The 3-second recovery phase applied dynamically via JS */
+        .feed-recovering {
+            filter: grayscale(0%) contrast(1) blur(0px) brightness(1);
             transition: filter 3s cubic-bezier(0.1, 0.8, 0.25, 1);
+        }
+
+        /* VIOLENT VIDEO SHATTER ANIMATION (Uses the video's actual color layers) */
+        .video-shatter {
+            animation: video-tear 0.15s infinite;
+        }
+
+        @keyframes video-tear {
+            0% { transform: skew(0deg) scale(1.05); filter: contrast(3) saturate(3) hue-rotate(0deg); clip-path: inset(0 0 0 0); }
+            15% { transform: translate(-25px, 8px) skewX(-10deg); clip-path: inset(15% 0 60% 0); } /* Heavy upper horizontal slice */
+            30% { transform: translate(30px, -5px) scaleY(1.1); filter: hue-rotate(90deg) brightness(1.8) saturate(4); clip-path: inset(45% 0 20% 0); } /* Center slice */
+            45% { transform: translate(-15px, -10px); filter: invert(0.2) contrast(4); clip-path: inset(70% 0 10% 0); } /* Low block slice */
+            60% { transform: skewX(15deg) scaleX(1.1); filter: hue-rotate(180deg) saturate(5); clip-path: inset(5% 0 80% 0); } /* Top sliver slice */
+            75% { transform: translate(20px, 12px); clip-path: inset(35% 0 40% 0); }
+            90% { transform: skew(-5deg) translate(-10px, -2px); filter: brightness(2.5) contrast(2); clip-path: inset(82% 0 5% 0); } /* Intense bottom block */
+            100% { transform: skew(0deg) scale(1.05); filter: contrast(3) saturate(3) hue-rotate(360deg); clip-path: inset(0 0 0 0); }
         }
         
         .vignette {
@@ -35,38 +57,28 @@
             z-index: 1; pointer-events: none;
         }
 
-        /* --- IMMERSIVE DIGITAL CRT GLITCH OVERLAY (MATCHED TO REFERENCE) --- */
+        /* --- IMMERSIVE DIGITAL CRT GLITCH OVERLAY --- */
         #glitch-overlay {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             background: transparent; z-index: 9998;
             pointer-events: none; display: none;
             opacity: 1;
-            /* Handles the smooth fade out/fizzle of the static effect right at the end */
-            transition: opacity 0.5s ease; 
+            transition: opacity 0.6s ease; /* Smooth fizzle out at the end */
         }
         
-        /* Recreates the heavy horizontal pixel scan and CRT texture from your image */
         #glitch-overlay.glitching {
             display: block;
-            animation: analog-shatter 0.12s infinite;
-            /* Layer 1: Dense horizontal scanlines. Layer 2: Tight vertical shadow mask to create a phosphor pixel look */
+            animation: overlay-static 0.1s infinite;
             background: 
-                linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.6) 50%), 
-                linear-gradient(90deg, rgba(255, 0, 0, 0.2), rgba(0, 255, 0, 0.05), rgba(0, 0, 255, 0.2));
+                linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.65) 50%), 
+                linear-gradient(90deg, rgba(255, 0, 0, 0.15), rgba(0, 255, 0, 0.04), rgba(0, 0, 255, 0.15));
             background-size: 100% 3px, 4px 100%;
         }
 
-        /* Intense block displacement and harsh color separation loops */
-        @keyframes analog-shatter {
-            0% { transform: skew(0deg) scale(1); filter: hue-rotate(0deg) contrast(2.5) saturate(2); clip-path: inset(0 0 0 0); }
-            10% { transform: translate(-12px, -2px) skew(-3deg); clip-path: inset(12% 0 65% 0); }
-            20% { transform: translate(18px, 5px); filter: hue-rotate(120deg) brightness(1.6); clip-path: inset(45% 0 30% 0); }
-            35% { transform: translate(-25px, -8px) scaleY(1.1); filter: invert(0.15) contrast(3); clip-path: inset(70% 0 5% 0); }
-            50% { transform: skew(12deg); filter: hue-rotate(240deg) saturate(3); clip-path: inset(5% 0 85% 0); }
-            65% { transform: translate(10px, 8px); clip-path: inset(30% 0 50% 0); }
-            80% { transform: translate(-5px, -5px) skew(-8deg); filter: brightness(2) contrast(2); clip-path: inset(88% 0 2% 0); }
-            95% { transform: translate(22px, 3px) scaleX(1.05); filter: hue-rotate(320deg); clip-path: inset(18% 0 78% 0); }
-            100% { transform: skew(0deg) scale(1); filter: hue-rotate(360deg) contrast(1); clip-path: inset(0 0 0 0); }
+        @keyframes overlay-static {
+            0% { opacity: 1; }
+            50% { opacity: 0.85; }
+            100% { opacity: 1; }
         }
 
         /* --- BOOT SCREEN (OFFLINE RECON INTERFACE) --- */
@@ -227,32 +239,33 @@
             const glitch = document.getElementById('glitch-overlay');
             const boot = document.getElementById('boot-screen');
             
-            // 1. Fire up the analog CRT shatter instantly
+            // 1. Instantly shred the actual video data layer using the custom animation
+            video.classList.remove('feed-offline');
+            video.classList.add('video-shatter');
+            video.play();
+            
+            // 2. Overlay the CRT scanline grid on top
             glitch.style.opacity = '1';
             glitch.classList.add('glitching');
             
-            // 2. Play the SFX and background track
-            sfx.volume = 0.5;
-            sfx.play().catch(err => console.log("SFX play block handled:", err));
+            // 3. Audio engine engagement (Volume parameter remains controlled as set)
+            sfx.volume = 0.4; // Tweak this decimal point down further if needed
+            sfx.play().catch(err => console.log("SFX tracking block handled:", err));
             
             music.volume = 0.7;
-            music.play().catch(err => console.log("Music play block handled:", err));
+            music.play().catch(err => console.log("Music tracking block handled:", err));
             
-            // 3. Start background video timeline
-            video.play();
-            
-            // 4. Begin peeling back color filters and fading out the overlay button container
-            setTimeout(() => {
-                video.classList.remove('feed-offline');
-                boot.style.opacity = '0';
-            }, 50); 
+            // 4. Smoothly fade the overlay button screen away immediately over 3s
+            boot.style.opacity = '0';
 
-            // 5. Fizzle stage: Soft-fade the heavy CRT matrix overlay out over the last 500ms
+            // 5. Fizzle stage: At 2.4 seconds, kill the harsh video tearing and initiate color stabilization
             setTimeout(() => {
-                glitch.style.opacity = '0';
-            }, 2500); 
+                video.classList.remove('video-shatter');
+                video.classList.add('feed-recovering');
+                glitch.style.opacity = '0'; // Dissolves the phosphor mask overlay
+            }, 2400); 
 
-            // 6. Hard terminate the execution blocks right at the 3-second finish line
+            // 6. Hard clean terminal termination exactly at the 3-second mark
             setTimeout(() => {
                 glitch.classList.remove('glitching');
                 boot.style.display = 'none';
