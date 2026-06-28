@@ -23,7 +23,7 @@
             object-fit: cover; z-index: 0; pointer-events: none;
         }
         
-        /* Slowed transition down to a gorgeous 3-second crawl */
+        /* Smoothly crossfades back to full color and crisp focus over 3s */
         .feed-offline {
             filter: grayscale(100%) contrast(1.1) blur(8px) brightness(0.5);
             transition: filter 3s cubic-bezier(0.1, 0.8, 0.25, 1);
@@ -35,30 +35,38 @@
             z-index: 1; pointer-events: none;
         }
 
-        /* --- IMMERSIVE GLITCH OVERLAY OVERRIDE --- */
+        /* --- IMMERSIVE DIGITAL CRT GLITCH OVERLAY (MATCHED TO REFERENCE) --- */
         #glitch-overlay {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             background: transparent; z-index: 9998;
             pointer-events: none; display: none;
+            opacity: 1;
+            /* Handles the smooth fade out/fizzle of the static effect right at the end */
+            transition: opacity 0.5s ease; 
         }
-        /* Active structural static pulse with horizontal block slices */
+        
+        /* Recreates the heavy horizontal pixel scan and CRT texture from your image */
         #glitch-overlay.glitching {
             display: block;
-            animation: screen-tear 0.2s infinite;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.4) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.1), rgba(0, 255, 0, 0.02), rgba(0, 255, 0, 0.1));
-            background-size: 100% 6px, 8px 100%;
+            animation: analog-shatter 0.12s infinite;
+            /* Layer 1: Dense horizontal scanlines. Layer 2: Tight vertical shadow mask to create a phosphor pixel look */
+            background: 
+                linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.6) 50%), 
+                linear-gradient(90deg, rgba(255, 0, 0, 0.2), rgba(0, 255, 0, 0.05), rgba(0, 0, 255, 0.2));
+            background-size: 100% 3px, 4px 100%;
         }
 
-        /* Advanced keyframes using clip-path blocks to slice the viewport horizontally */
-        @keyframes screen-tear {
-            0% { transform: skew(0deg); filter: hue-rotate(0deg) contrast(2); clip-path: inset(0 0 0 0); }
-            15% { transform: translate(-10px, 4px); clip-path: inset(20% 0 70% 0); } /* Slices a high block */
-            30% { transform: translate(15px, -2px) skew(-5deg); filter: hue-rotate(90deg) brightness(1.3); clip-path: inset(55% 0 15% 0); } /* Slices a low block */
-            45% { transform: translate(-5px, 8px); filter: invert(0.1) contrast(2.5); clip-path: inset(10% 0 80% 0); }
-            60% { transform: skew(8deg) scaleY(1.05); filter: hue-rotate(180deg); clip-path: inset(75% 0 5% 0); } /* Deep bottom slice */
-            75% { transform: translate(8px, -6px); clip-path: inset(40% 0 45% 0); } /* Centered slice block */
-            90% { transform: skew(-3deg) translate(-2px, 2px); filter: brightness(1.8); clip-path: inset(5% 0 90% 0); }
-            100% { transform: skew(0deg); filter: hue-rotate(360deg) contrast(1); clip-path: inset(0 0 0 0); }
+        /* Intense block displacement and harsh color separation loops */
+        @keyframes analog-shatter {
+            0% { transform: skew(0deg) scale(1); filter: hue-rotate(0deg) contrast(2.5) saturate(2); clip-path: inset(0 0 0 0); }
+            10% { transform: translate(-12px, -2px) skew(-3deg); clip-path: inset(12% 0 65% 0); }
+            20% { transform: translate(18px, 5px); filter: hue-rotate(120deg) brightness(1.6); clip-path: inset(45% 0 30% 0); }
+            35% { transform: translate(-25px, -8px) scaleY(1.1); filter: invert(0.15) contrast(3); clip-path: inset(70% 0 5% 0); }
+            50% { transform: skew(12deg); filter: hue-rotate(240deg) saturate(3); clip-path: inset(5% 0 85% 0); }
+            65% { transform: translate(10px, 8px); clip-path: inset(30% 0 50% 0); }
+            80% { transform: translate(-5px, -5px) skew(-8deg); filter: brightness(2) contrast(2); clip-path: inset(88% 0 2% 0); }
+            95% { transform: translate(22px, 3px) scaleX(1.05); filter: hue-rotate(320deg); clip-path: inset(18% 0 78% 0); }
+            100% { transform: skew(0deg) scale(1); filter: hue-rotate(360deg) contrast(1); clip-path: inset(0 0 0 0); }
         }
 
         /* --- BOOT SCREEN (OFFLINE RECON INTERFACE) --- */
@@ -66,7 +74,6 @@
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0, 0, 0, 0.45); z-index: 9999;
             display: flex; justify-content: center; align-items: center;
-            /* Matches the 3-second crossfade sweep */
             transition: opacity 3s cubic-bezier(0.1, 0.8, 0.25, 1);
         }
         #init-btn {
@@ -83,7 +90,6 @@
             display: flex; flex-direction: column; align-items: center; z-index: 10;
         }
 
-        /* METALLIC HEADER WITH INTENSE BLURPLE GLOW */
         .main-title {
             font-family: 'Orbitron', sans-serif; font-size: 42px; font-weight: 900;
             letter-spacing: 8px; margin-bottom: 10px;
@@ -100,9 +106,7 @@
             50% { filter: drop-shadow(0 4px 8px rgba(0,0,0,1)) drop-shadow(0 0 35px rgba(150, 0, 255, 0.9)); }
         }
 
-        .top-nav {
-            display: flex; justify-content: center; flex-wrap: wrap; gap: 6px;
-        }
+        .top-nav { display: flex; justify-content: center; flex-wrap: wrap; gap: 6px; }
 
         .nav-link {
             position: relative; display: inline-block; padding: 8px 12px;
@@ -133,25 +137,16 @@
         }
         #about-drawer.open { right: 0; }
 
-        /* VERTICAL TAB */
         #about-tab {
             position: absolute; left: -40px; top: 50%; transform: translateY(-50%);
             width: 40px; height: 120px; background: #7800ff;
             display: flex; align-items: center; justify-content: center;
             cursor: pointer; border-radius: 8px 0 0 8px; box-shadow: -5px 0 20px rgba(120, 0, 255, 0.6);
         }
-        #about-tab span {
-            transform: rotate(-90deg); font-family: 'Orbitron', sans-serif;
-            color: #fff; font-size: 14px; letter-spacing: 3px; font-weight: 700;
-        }
+        #about-tab span { transform: rotate(-90deg); font-family: 'Orbitron', sans-serif; color: #fff; font-size: 14px; letter-spacing: 3px; font-weight: 700; }
 
-        #about-drawer h2 {
-            font-family: 'Orbitron', sans-serif; font-size: 24px; color: #fff;
-            margin-bottom: 20px; border-bottom: 1px solid #ff0044; padding-bottom: 10px;
-        }
-        #about-drawer p {
-            font-family: 'Rajdhani', sans-serif; font-size: 18px; line-height: 1.6; color: #ddd;
-        }
+        #about-drawer h2 { font-family: 'Orbitron', sans-serif; font-size: 24px; color: #fff; margin-bottom: 20px; border-bottom: 1px solid #ff0044; padding-bottom: 10px; }
+        #about-drawer p { font-family: 'Rajdhani', sans-serif; font-size: 18px; line-height: 1.6; color: #ddd; }
 
         /* --- BOTTOM TIMELINE TOGGLE --- */
         .timeline-control {
@@ -161,19 +156,10 @@
             border: 1px solid #333; border-radius: 50px;
         }
         .timeline-control a { text-decoration: none; }
-        .timeline-label {
-            font-family: 'Orbitron', sans-serif; font-weight: 700; font-size: 14px;
-            letter-spacing: 2px; color: #444; transition: 0.3s;
-        }
+        .timeline-label { font-family: 'Orbitron', sans-serif; font-weight: 700; font-size: 14px; letter-spacing: 2px; color: #444; transition: 0.3s; }
         .timeline-label.active-side { color: #fff; text-shadow: 0 0 10px #00eaff; }
-        .toggle-link {
-            display: block; width: 60px; height: 30px; background: #111;
-            border: 2px solid #444; border-radius: 30px; position: relative;
-        }
-        .toggle-link::after {
-            content: ''; position: absolute; top: 3px; left: 3px; width: 20px; height: 20px;
-            background: #00eaff; border-radius: 50%; transition: 0.2s;
-        }
+        .toggle-link { display: block; width: 60px; height: 30px; background: #111; border: 2px solid #444; border-radius: 30px; position: relative; }
+        .toggle-link::after { content: ''; position: absolute; top: 3px; left: 3px; width: 20px; height: 20px; background: #00eaff; border-radius: 50%; transition: 0.2s; }
     </style>
 </head>
 <body>
@@ -223,8 +209,11 @@
         <source src="https://www.dropbox.com/scl/fi/m7oenzptff1d0kllabr4e/COC_Sections_Playlist.mp3?rlkey=1zo6qeoxqt39yvpcm8nbs68wf&st=j6n18xdk&raw=1" type="audio/mpeg">
     </audio>
 
+    <audio id="glitch-sfx">
+        <source src="glitch-sfx.mp3" type="audio/mpeg">
+    </audio>
+
     <script>
-        // Ensure background video sits paused at exactly frame 0 when a user hits the landing url
         window.addEventListener('DOMContentLoaded', () => {
             const video = document.getElementById('bg-video');
             video.pause();
@@ -233,31 +222,41 @@
 
         document.getElementById('init-btn').addEventListener('click', function() {
             const music = document.getElementById('bg-music');
+            const sfx = document.getElementById('glitch-sfx');
             const video = document.getElementById('bg-video');
             const glitch = document.getElementById('glitch-overlay');
             const boot = document.getElementById('boot-screen');
             
-            // 1. Kick on the glitch slicing overlay immediately
+            // 1. Fire up the analog CRT shatter instantly
+            glitch.style.opacity = '1';
             glitch.classList.add('glitching');
             
-            // 2. Fire the playlist stream
-            music.volume = 0.7;
-            music.play().catch(err => console.log("Audio play request caught:", err));
+            // 2. Play the SFX and background track
+            sfx.volume = 0.8;
+            sfx.play().catch(err => console.log("SFX play block handled:", err));
             
-            // 3. Immediately start the city skyline video looping
+            music.volume = 0.7;
+            music.play().catch(err => console.log("Music play block handled:", err));
+            
+            // 3. Start background video timeline
             video.play();
             
-            // 4. Peel back desaturation/blur over a full 3 seconds while the blocks shift
+            // 4. Begin peeling back color filters and fading out the overlay button container
             setTimeout(() => {
                 video.classList.remove('feed-offline');
                 boot.style.opacity = '0';
-            }, 50); // Fires almost immediately to let the transition sweep run
+            }, 50); 
 
-            // 5. Let the slicing effect continue tearing until the full 3 seconds wraps up
+            // 5. Fizzle stage: Soft-fade the heavy CRT matrix overlay out over the last 500ms
+            setTimeout(() => {
+                glitch.style.opacity = '0';
+            }, 2500); 
+
+            // 6. Hard terminate the execution blocks right at the 3-second finish line
             setTimeout(() => {
                 glitch.classList.remove('glitching');
                 boot.style.display = 'none';
-            }, 3000); // Perfectly matches the full color-restore span
+            }, 3000); 
         });
 
         const drawer = document.getElementById('about-drawer');
