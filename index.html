@@ -32,75 +32,11 @@
             transform: scale(1);
         }
         
-        .feed-offline {
-            filter: grayscale(100%) contrast(1.1) blur(8px) brightness(0.5);
-        }
-        
-        .feed-recovering {
-            filter: grayscale(0%) contrast(1) blur(0px) brightness(1);
-            transition: filter 3s cubic-bezier(0.1, 0.8, 0.25, 1);
-        }
-
-        /* VIOLENT VIDEO SHATTER ANIMATION */
-        .video-shatter {
-            animation: video-tear 0.15s infinite;
-        }
-
-        @keyframes video-tear {
-            0% { transform: skew(0deg) scale(1.05); filter: contrast(3) saturate(3) hue-rotate(0deg); clip-path: inset(0 0 0 0); }
-            15% { transform: translate(-25px, 8px) skewX(-10deg); clip-path: inset(15% 0 60% 0); }
-            30% { transform: translate(30px, -5px) scaleY(1.1); filter: hue-rotate(90deg) brightness(1.8) saturate(4); clip-path: inset(45% 0 20% 0); }
-            45% { transform: translate(-15px, -10px); filter: invert(0.2) contrast(4); clip-path: inset(70% 0 10% 0); }
-            60% { transform: skewX(15deg) scaleX(1.1); filter: hue-rotate(180deg) saturate(5); clip-path: inset(5% 0 80% 0); }
-            75% { transform: translate(20px, 12px); clip-path: inset(35% 0 40% 0); }
-            90% { transform: skew(-5deg) translate(-10px, -2px); filter: brightness(2.5) contrast(2); clip-path: inset(82% 0 5% 0); }
-            100% { transform: skew(0deg) scale(1.05); filter: contrast(3) saturate(3) hue-rotate(360deg); clip-path: inset(0 0 0 0); }
-        }
-        
         .vignette {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             box-shadow: inset 0 0 150px rgba(0,0,0,0.9), inset 0 0 300px rgba(0,0,0,0.7);
             z-index: 1; pointer-events: none;
         }
-
-        /* --- DIGITAL CRT GLITCH OVERLAY --- */
-        #glitch-overlay {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background: transparent; z-index: 9998;
-            pointer-events: none; display: none;
-            opacity: 1;
-            transition: opacity 0.6s ease;
-        }
-        
-        #glitch-overlay.glitching {
-            display: block;
-            animation: overlay-static 0.1s infinite;
-            background: 
-                linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.65) 50%), 
-                linear-gradient(90deg, rgba(255, 0, 0, 0.15), rgba(0, 255, 0, 0.04), rgba(0, 0, 255, 0.15));
-            background-size: 100% 3px, 4px 100%;
-        }
-
-        @keyframes overlay-static {
-            0% { opacity: 1; }
-            50% { opacity: 0.85; }
-            100% { opacity: 1; }
-        }
-
-        /* --- BOOT SCREEN (OFFLINE RECON INTERFACE) --- */
-        #boot-screen {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.45); z-index: 9999;
-            display: flex; justify-content: center; align-items: center;
-            transition: opacity 3s cubic-bezier(0.1, 0.8, 0.25, 1);
-        }
-        #init-btn {
-            background: rgba(5, 5, 10, 0.85); border: 1px solid #ff0044; color: #ff0044;
-            font-family: 'Orbitron', sans-serif; font-size: 16px; letter-spacing: 5px;
-            padding: 18px 45px; cursor: pointer; transition: 0.4s ease; text-transform: uppercase;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.9); backdrop-filter: blur(5px);
-        }
-        #init-btn:hover { background: #ff0044; color: #000; box-shadow: 0 0 30px #ff0044; letter-spacing: 7px; }
 
         /* --- HEADER & NAVIGATION AREA --- */
         .header-container {
@@ -166,32 +102,67 @@
         #about-drawer h2 { font-family: 'Orbitron', sans-serif; font-size: 24px; color: #fff; margin-bottom: 20px; border-bottom: 1px solid #ff0044; padding-bottom: 10px; }
         #about-drawer p { font-family: 'Rajdhani', sans-serif; font-size: 18px; line-height: 1.6; color: #ddd; }
 
-        /* --- BOTTOM TIMELINE TOGGLE --- */
+        /* --- AUDIO & TIMELINE CONTROLS DOCK --- */
+        .bottom-dock {
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+            z-index: 100; display: flex; flex-direction: column; align-items: center; gap: 12px;
+        }
+
+        #audio-toggle-btn {
+            background: rgba(5, 5, 10, 0.85);
+            border: 1px solid #ff0044;
+            color: #ff0044;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            padding: 8px 22px;
+            cursor: pointer;
+            transition: 0.3s ease;
+            text-transform: uppercase;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(5px);
+            border-radius: 4px;
+        }
+
+        #audio-toggle-btn:hover {
+            background: #ff0044;
+            color: #000;
+            box-shadow: 0 0 20px #ff0044;
+        }
+
+        #audio-toggle-btn.audio-active {
+            border-color: #00eaff;
+            color: #00eaff;
+            box-shadow: 0 0 15px rgba(0, 234, 255, 0.4);
+        }
+
+        #audio-toggle-btn.audio-active:hover {
+            background: #00eaff;
+            color: #000;
+            box-shadow: 0 0 20px #00eaff;
+        }
+
         .timeline-control {
-            position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%);
-            z-index: 100; display: flex; align-items: center; gap: 20px;
-            background: rgba(0, 0, 0, 0.8); padding: 10px 30px;
+            display: flex; align-items: center; gap: 20px;
+            background: rgba(0, 0, 0, 0.8); padding: 8px 25px;
             border: 1px solid #333; border-radius: 50px;
+            backdrop-filter: blur(5px);
         }
         .timeline-control a { text-decoration: none; }
-        .timeline-label { font-family: 'Orbitron', sans-serif; font-weight: 700; font-size: 14px; letter-spacing: 2px; color: #444; transition: 0.3s; }
+        .timeline-label { font-family: 'Orbitron', sans-serif; font-weight: 700; font-size: 13px; letter-spacing: 2px; color: #444; transition: 0.3s; }
         .timeline-label.active-side { color: #fff; text-shadow: 0 0 10px #00eaff; }
-        .toggle-link { display: block; width: 60px; height: 30px; background: #111; border: 2px solid #444; border-radius: 30px; position: relative; }
-        .toggle-link::after { content: ''; position: absolute; top: 3px; left: 3px; width: 20px; height: 20px; background: #00eaff; border-radius: 50%; transition: 0.2s; }
+        .toggle-link { display: block; width: 50px; height: 26px; background: #111; border: 2px solid #444; border-radius: 30px; position: relative; }
+        .toggle-link::after { content: ''; position: absolute; top: 2px; left: 2px; width: 18px; height: 18px; background: #00eaff; border-radius: 50%; transition: 0.2s; }
     </style>
 </head>
 <body>
 
-    <div id="glitch-overlay"></div>
-
-    <div id="boot-screen">
-        <button id="init-btn">[ Connect to Feed ]</button>
-    </div>
-
-    <!-- CLEAN MP4 PATH WITHOUT QUERY STRING -->
-    <video loop muted playsinline id="bg-video" class="feed-offline">
+    <!-- LOOPING MUTED BACKGROUND VIDEO -->
+    <video autoplay loop muted playsinline id="bg-video">
         <source src="Asset-Site-Storage/COC_Glitch_Loop720P.mp4" type="video/mp4">
     </video>
+    
     <div class="vignette"></div>
 
     <div class="header-container">
@@ -218,59 +189,36 @@
         </p>
     </div>
 
-    <div class="timeline-control">
-        <span class="timeline-label active-side">CROWLINK</span>
-        <a href="/cityofchaos_chainmark" class="toggle-link" title="Switch to Chainmark Timeline"></a>
-        <span class="timeline-label">CHAINMARK</span>
+    <!-- BOTTOM DOCK: AUDIO TOGGLE + TIMELINE -->
+    <div class="bottom-dock">
+        <button id="audio-toggle-btn">[ Establish Audio ]</button>
+        <div class="timeline-control">
+            <span class="timeline-label active-side">CROWLINK</span>
+            <a href="/cityofchaos_chainmark" class="toggle-link" title="Switch to Chainmark Timeline"></a>
+            <span class="timeline-label">CHAINMARK</span>
+        </div>
     </div>
 
     <audio id="bg-music" loop>
         <source src="https://www.dropbox.com/scl/fi/m7oenzptff1d0kllabr4e/COC_Sections_Playlist.mp3?rlkey=1zo6qeoxqt39yvpcm8nbs68wf&st=j6n18xdk&raw=1" type="audio/mpeg">
     </audio>
 
-    <audio id="glitch-sfx">
-        <source src="Asset-Site-Storage/Minor GlitchSFX.mp3?v=2.0" type="audio/mpeg">
-    </audio>
-
     <script>
-        window.addEventListener('DOMContentLoaded', () => {
-            const video = document.getElementById('bg-video');
-            video.pause();
-            video.currentTime = 0;
-        });
+        const audioBtn = document.getElementById('audio-toggle-btn');
+        const music = document.getElementById('bg-music');
 
-        document.getElementById('init-btn').addEventListener('click', function() {
-            const music = document.getElementById('bg-music');
-            const sfx = document.getElementById('glitch-sfx');
-            const video = document.getElementById('bg-video');
-            const glitch = document.getElementById('glitch-overlay');
-            const boot = document.getElementById('boot-screen');
-            
-            video.classList.remove('feed-offline');
-            video.classList.add('video-shatter');
-            video.play();
-            
-            glitch.style.opacity = '1';
-            glitch.classList.add('glitching');
-            
-            sfx.volume = 0.4;
-            sfx.play().catch(err => console.log("SFX tracking block handled:", err));
-            
-            music.volume = 0.7;
-            music.play().catch(err => console.log("Music tracking block handled:", err));
-            
-            boot.style.opacity = '0';
-
-            setTimeout(() => {
-                video.classList.remove('video-shatter');
-                video.classList.add('feed-recovering');
-                glitch.style.opacity = '0';
-            }, 2400); 
-
-            setTimeout(() => {
-                glitch.classList.remove('glitching');
-                boot.style.display = 'none';
-            }, 3000); 
+        audioBtn.addEventListener('click', function() {
+            if (music.paused) {
+                music.volume = 0.7;
+                music.play().then(() => {
+                    audioBtn.textContent = "[ Terminate Audio ]";
+                    audioBtn.classList.add('audio-active');
+                }).catch(err => console.log("Audio playback blocked:", err));
+            } else {
+                music.pause();
+                audioBtn.textContent = "[ Establish Audio ]";
+                audioBtn.classList.remove('audio-active');
+            }
         });
 
         const drawer = document.getElementById('about-drawer');
